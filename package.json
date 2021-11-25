@@ -1,0 +1,32 @@
+{
+  "name": "delphinus-l2-client-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "prepare": "npm run build"
+  },
+  "author": "ZhenXunGe",
+  "license": "UNLICENSED",
+  "exports": {
+    "./*.json": "./dist/*.json",
+    "./*": "./dist/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZhenXunGe/delphinus-l2-lib.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ZhenXunGe/delphinus-l2-lib/issues"
+  },
+  "homepage": "https://github.com/ZhenXunGe/delphinus-l2-lib#readme",
+  "dependencies": {
+    "bn.js": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.0",
+    "eslint": "^7.24.0",
+    "typescript": "^4.2.4"
+  }
+}
