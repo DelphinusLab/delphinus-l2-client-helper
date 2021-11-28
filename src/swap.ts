@@ -10,8 +10,8 @@ export enum CommandOp {
   Deposit = 0,
   Withdraw = 1,
   Swap = 2,
-  Supply = 3,
-  Retrieve = 4,
+  Retrieve = 3,
+  Supply = 4,
   AddPool = 5,
   SetKey = 6,
 }
@@ -108,9 +108,9 @@ export class SwapHelper {
     return this.send(
       "withdraw",
       s,
-      l1Account.toString(10),
       tokenIndex.toString(10),
       amount.toString(10),
+      l1Account.toString(10),
       nonce.toString(10)
     );
   }
@@ -125,7 +125,7 @@ export class SwapHelper {
     const buf = new Uint8Array(81);
 
     buf.fill(0);
-    buf[0] = CommandOp.Withdraw;
+    buf[0] = CommandOp.Swap;
     buf.set(nonce.toArray("le", 8), 1);
     buf.set(accountIndex.toArray("le", 4), 9);
     buf.set(poolIndex.toArray("le", 4), 13);
@@ -154,7 +154,7 @@ export class SwapHelper {
     const buf = new Uint8Array(81);
 
     buf.fill(0);
-    buf[0] = CommandOp.Withdraw;
+    buf[0] = CommandOp.Supply;
     buf.set(nonce.toArray("le", 8), 1);
     buf.set(accountIndex.toArray("le", 4), 9);
     buf.set(poolIndex.toArray("le", 4), 13);
@@ -183,7 +183,7 @@ export class SwapHelper {
     const buf = new Uint8Array(81);
 
     buf.fill(0);
-    buf[0] = CommandOp.Withdraw;
+    buf[0] = CommandOp.Retrieve;
     buf.set(nonce.toArray("le", 8), 1);
     buf.set(accountIndex.toArray("le", 4), 9);
     buf.set(poolIndex.toArray("le", 4), 13);
@@ -193,7 +193,7 @@ export class SwapHelper {
     const s = this.cryptoUtil.sign(buf, this.privateKey);
 
     return this.send(
-      "poolSupply",
+      "poolRetrieve",
       s,
       poolIndex.toString(10),
       amount0.toString(10),
