@@ -2,7 +2,7 @@
   "NonceId": "u64",
   "ReqId": "U256",
   "Amount": "U256",
-  "Direction": "u8",
+  "Reverse": "u8",
 
   "L1Account": "U256",
   "L1TxHash": "U256",
@@ -11,18 +11,27 @@
   "PoolIndex": "u32",
   "TokenIndex": "u32",
 
-  "PublicKey": "(U256, U256)",
+  "SignatureRX": "U256",
+  "SignatureRY": "U256",
+  "SignatureS": "U256",
   "Signature": "(U256, U256, U256)",
+
+  "PublicKeyX": "U256",
+  "PublicKeyY": "U256",
+  "PublicKey": "(PublicKeyX, PublicKeyY)",
+
+  "ReserveU32": "u32",
+  "ReserveU256": "U256",
 
   "Ops": {
     "_enum": {
-      "SetKey": "(AccountIndex, PublicKey)",
-      "Deposit": "(Signature, AccountIndex, TokenIndex, Amount)",
-      "Withdraw": "(Signature, AccountIndex, TokenIndex, Amount, L1Account, NonceId)",
-      "Swap": "(Signature, AccountIndex, PoolIndex, Amount, Direction, NonceId)",
-      "PoolSupply": "(Signature, AccountIndex, PoolIndex, Amount, Amount, NonceId)",
-      "PoolRetrieve": "(Signature, AccountIndex, PoolIndex, Amount, Amount, NonceId)",
-      "AddPool": "(PoolIndex, TokenIndex, TokenIndex)"
+      "SetKey": "(SignatureRX, SignatureRY, SignatureS, NonceId, AccountIndex, ReserveU32, PublicKeyX, PublicKeyY)",
+      "Deposit": "(SignatureRX, SignatureRY, SignatureS, NonceId, AccountIndex, TokenIndex, Amount, ReserveU256)",
+      "Withdraw": "(SignatureRX, SignatureRY, SignatureS, NonceId, AccountIndex, TokenIndex, Amount, L1Account)",
+      "Swap": "(SignatureRX, SignatureRY, SignatureS, NonceId, AccountIndex, PoolIndex, Reverse, Amount)",
+      "PoolSupply": "(SignatureRX, SignatureRY, SignatureS, NonceId, AccountIndex, PoolIndex, Amount, Amount)",
+      "PoolRetrieve": "(SignatureRX, SignatureRY, SignatureS, NonceId, AccountIndex, PoolIndex, Amount, Amount)",
+      "AddPool": "(SignatureRX, SignatureRY, SignatureS, NonceId, TokenIndex, TokenIndex, ReserveU256, ReserveU256, PoolIndex)"
     }
   }
 }
