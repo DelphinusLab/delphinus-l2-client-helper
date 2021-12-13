@@ -71,7 +71,6 @@ export class SwapHelper {
     buf.set(accountIndex.toArray("be", 4), 9);
     buf.set(tokenIndex.toArray("be", 4), 13);
     buf.set(amount.toArray("be", 32), 17);
-    buf.set(l1_tx_hash.toArray("be", 32), 49);
 
     const s = this.cryptoUtil.sign(buf, this.privateKey);
 
