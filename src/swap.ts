@@ -18,12 +18,12 @@ export enum CommandOp {
 
 export class SwapHelper {
   privateKey: Uint8Array;
-  send: (method: string, ...args: any[]) => Promise<void>;
+  send: (method: string, ...args: any[]) => Promise<[string, string]>;
   cryptoUtil: CryptoUtil;
 
   constructor(
     account: string,
-    send: (method: string, ...args: any[]) => Promise<void>,
+    send: (method: string, ...args: any[]) => Promise<[string, string]>,
     cryptoUtil: CryptoUtil
   ) {
     this.send = send;
