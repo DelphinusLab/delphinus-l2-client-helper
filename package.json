@@ -9,10 +9,6 @@
   },
   "author": "ZhenXunGe",
   "license": "UNLICENSED",
-  "exports": {
-    "./*.json": "./dist/*.json",
-    "./*": "./dist/*.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ZhenXunGe/delphinus-l2-lib.git"

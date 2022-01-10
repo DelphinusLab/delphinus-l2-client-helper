@@ -10,20 +10,20 @@ export enum CommandOp {
   Deposit = 0,
   Withdraw = 1,
   Swap = 2,
-  Supply = 3,
-  Retrieve = 4,
+  Retrieve = 3,
+  Supply = 4,
   AddPool = 5,
   SetKey = 6,
 }
 
 export class SwapHelper {
   privateKey: Uint8Array;
-  send: (method: string, ...args: any[]) => Promise<void>;
+  send: (method: string, ...args: any[]) => Promise<[string, string]>;
   cryptoUtil: CryptoUtil;
 
   constructor(
     account: string,
-    send: (method: string, ...args: any[]) => Promise<void>,
+    send: (method: string, ...args: any[]) => Promise<[string, string]>,
     cryptoUtil: CryptoUtil
   ) {
     this.send = send;
@@ -46,9 +46,9 @@ export class SwapHelper {
 
     buf.fill(0);
     buf[0] = CommandOp.AddPool;
-    buf.set(nonce.toArray("le", 8), 1);
-    buf.set(token0.toArray("le", 4), 9);
-    buf.set(token1.toArray("le", 4), 13);
+    buf.set(nonce.toArray("be", 8), 1);
+    buf.set(token0.toArray("be", 4), 9);
+    buf.set(token1.toArray("be", 4), 13);
 
     const s = this.cryptoUtil.sign(buf, this.privateKey);
     console.log(s);
@@ -67,11 +67,10 @@ export class SwapHelper {
 
     buf.fill(0);
     buf[0] = CommandOp.Deposit;
-    buf.set(nonce.toArray("le", 8), 1);
-    buf.set(accountIndex.toArray("le", 4), 9);
-    buf.set(tokenIndex.toArray("le", 4), 13);
-    buf.set(amount.toArray("le", 32), 17);
-    buf.set(l1_tx_hash.toArray("le", 32), 49);
+    buf.set(nonce.toArray("be", 8), 1);
+    buf.set(accountIndex.toArray("be", 4), 9);
+    buf.set(tokenIndex.toArray("be", 4), 13);
+    buf.set(amount.toArray("be", 32), 17);
 
     const s = this.cryptoUtil.sign(buf, this.privateKey);
 
@@ -97,20 +96,20 @@ export class SwapHelper {
 
     buf.fill(0);
     buf[0] = CommandOp.Withdraw;
-    buf.set(nonce.toArray("le", 8), 1);
-    buf.set(accountIndex.toArray("le", 4), 9);
-    buf.set(tokenIndex.toArray("le", 4), 13);
-    buf.set(amount.toArray("le", 32), 17);
-    buf.set(l1Account.toArray("le", 32), 49);
+    buf.set(nonce.toArray("be", 8), 1);
+    buf.set(accountIndex.toArray("be", 4), 9);
+    buf.set(tokenIndex.toArray("be", 4), 13);
+    buf.set(amount.toArray("be", 32), 17);
+    buf.set(l1Account.toArray("be", 32), 49);
 
     const s = this.cryptoUtil.sign(buf, this.privateKey);
 
     return this.send(
       "withdraw",
       s,
-      l1Account.toString(10),
       tokenIndex.toString(10),
       amount.toString(10),
+      l1Account.toString(10),
       nonce.toString(10)
     );
   }
@@ -125,12 +124,12 @@ export class SwapHelper {
     const buf = new Uint8Array(81);
 
     buf.fill(0);
-    buf[0] = CommandOp.Withdraw;
-    buf.set(nonce.toArray("le", 8), 1);
-    buf.set(accountIndex.toArray("le", 4), 9);
-    buf.set(poolIndex.toArray("le", 4), 13);
-    buf.set(reverse.toArray("le", 32), 17);
-    buf.set(amount.toArray("le", 32), 49);
+    buf[0] = CommandOp.Swap;
+    buf.set(nonce.toArray("be", 8), 1);
+    buf.set(accountIndex.toArray("be", 4), 9);
+    buf.set(poolIndex.toArray("be", 4), 13);
+    buf.set(reverse.toArray("be", 32), 17);
+    buf.set(amount.toArray("be", 32), 49);
 
     const s = this.cryptoUtil.sign(buf, this.privateKey);
 
@@ -154,12 +153,12 @@ export class SwapHelper {
     const buf = new Uint8Array(81);
 
     buf.fill(0);
-    buf[0] = CommandOp.Withdraw;
-    buf.set(nonce.toArray("le", 8), 1);
-    buf.set(accountIndex.toArray("le", 4), 9);
-    buf.set(poolIndex.toArray("le", 4), 13);
-    buf.set(amount0.toArray("le", 32), 17);
-    buf.set(amount1.toArray("le", 32), 49);
+    buf[0] = CommandOp.Supply;
+    buf.set(nonce.toArray("be", 8), 1);
+    buf.set(accountIndex.toArray("be", 4), 9);
+    buf.set(poolIndex.toArray("be", 4), 13);
+    buf.set(amount0.toArray("be", 32), 17);
+    buf.set(amount1.toArray("be", 32), 49);
 
     const s = this.cryptoUtil.sign(buf, this.privateKey);
 
@@ -183,17 +182,17 @@ export class SwapHelper {
     const buf = new Uint8Array(81);
 
     buf.fill(0);
-    buf[0] = CommandOp.Withdraw;
-    buf.set(nonce.toArray("le", 8), 1);
-    buf.set(accountIndex.toArray("le", 4), 9);
-    buf.set(poolIndex.toArray("le", 4), 13);
-    buf.set(amount0.toArray("le", 32), 17);
-    buf.set(amount1.toArray("le", 32), 49);
+    buf[0] = CommandOp.Retrieve;
+    buf.set(nonce.toArray("be", 8), 1);
+    buf.set(accountIndex.toArray("be", 4), 9);
+    buf.set(poolIndex.toArray("be", 4), 13);
+    buf.set(amount0.toArray("be", 32), 17);
+    buf.set(amount1.toArray("be", 32), 49);
 
     const s = this.cryptoUtil.sign(buf, this.privateKey);
 
     return this.send(
-      "poolSupply",
+      "poolRetrieve",
       s,
       poolIndex.toString(10),
       amount0.toString(10),
