@@ -16,14 +16,14 @@ export enum CommandOp {
   SetKey = 6,
 }
 
-export class SwapHelper {
+export class SwapHelper<t> {
   privateKey: Uint8Array;
-  send: (method: string, ...args: any[]) => Promise<[string, string]>;
+  send: (method: string, ...args: any[]) => Promise<t>;
   cryptoUtil: CryptoUtil;
 
   constructor(
     account: string,
-    send: (method: string, ...args: any[]) => Promise<[string, string]>,
+    send: (method: string, ...args: any[]) => Promise<t>,
     cryptoUtil: CryptoUtil
   ) {
     this.send = send;
