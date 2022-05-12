@@ -10,6 +10,7 @@
   "AccountIndex": "u32",
   "PoolIndex": "u32",
   "TokenIndex": "u32",
+  "NFTId": "u32",
 
   "SignatureRX": "U256",
   "SignatureRY": "U256",
