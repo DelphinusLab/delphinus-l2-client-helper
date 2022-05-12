@@ -16,6 +16,11 @@ export enum CommandOp {
   SetKey = 6,
 }
 
+export function commandName(op: CommandOp) {
+  let c = ["Deposit", "Withdraw", "Swap", "Retrieve", "Supply", "AddPool", "SetKey"];
+  return c[op];
+}
+
 export class SwapHelper<t> {
   privateKey: Uint8Array;
   send: (method: string, ...args: any[]) => Promise<t>;
